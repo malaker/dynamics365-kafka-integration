@@ -1,0 +1,8 @@
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/bin/Debug/Net.Confluent.KafkaRestProxy.Wrapper.dll
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/bin/Debug/Net.Confluent.KafkaRestProxy.Wrapper.pdb
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/bin/Debug/Newtonsoft.Json.dll
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/bin/Debug/Newtonsoft.Json.xml
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.csproj.CopyComplete
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.dll
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.pdb
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.csprojAssemblyReference.cache

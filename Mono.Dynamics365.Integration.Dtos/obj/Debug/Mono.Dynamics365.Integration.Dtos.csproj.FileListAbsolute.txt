@@ -1,0 +1,5 @@
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Mono.Dynamics365.Integration.Dtos/bin/Debug/Mono.Dynamics365.Integration.Dtos.dll
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Mono.Dynamics365.Integration.Dtos/bin/Debug/Mono.Dynamics365.Integration.Dtos.pdb
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Mono.Dynamics365.Integration.Dtos/obj/Debug/Mono.Dynamics365.Integration.Dtos.dll
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Mono.Dynamics365.Integration.Dtos/obj/Debug/Mono.Dynamics365.Integration.Dtos.pdb
+/Users/malaker/Projects/Mono.Dynamics365.Plugins/Mono.Dynamics365.Integration.Dtos/obj/Debug/Mono.Dynamics365.Integration.Dtos.csprojAssemblyReference.cache
