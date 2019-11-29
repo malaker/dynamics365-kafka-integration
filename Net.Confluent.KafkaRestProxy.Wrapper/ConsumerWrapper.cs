@@ -44,7 +44,7 @@ namespace Net.Confluent.KafkaRestProxy.Wrapper
             return result;
         }
 
-        public async Task Subscribe(IEnumerable<string> topics)
+        public async Task<HttpResponseMessage> Subscribe(IEnumerable<string> topics)
         {
             DefaultContractResolver contractResolver = new DefaultContractResolver
             {
@@ -61,6 +61,13 @@ namespace Net.Confluent.KafkaRestProxy.Wrapper
 
             var uriToUse = this.options.OverrideKafkaBaseUri ? options.ConsumerUri.Replace("kafka-rest", "localhost") : options.ConsumerUri;
 
+            if (string.IsNullOrEmpty(uriToUse))
+            {
+                throw new ArgumentException("Null or empty uri");
+            }
+
+
+
             var requestSubscribe = new HttpRequestMessage(HttpMethod.Post, $"{uriToUse}/subscription");
 
 
@@ -72,14 +79,14 @@ namespace Net.Confluent.KafkaRestProxy.Wrapper
 
             var response = await httpClient.SendAsync(requestSubscribe).ConfigureAwait(false);
 
+            return response;
+
         }
 
         public async Task<KafkaRestProxyBatchResponse<K, V>> Consume()
         {
-            DefaultContractResolver contractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            };
+
+            var contractResolver = new CamelCasePropertyNamesContractResolver();
 
             var jsonSerializerOptions = new JsonSerializerSettings
             {
@@ -96,8 +103,8 @@ namespace Net.Confluent.KafkaRestProxy.Wrapper
             consumeRequest.Headers.Add("Accept", options.ContentType);
 
             var response = await httpClient.SendAsync(consumeRequest).ConfigureAwait(false);
-
-            var result = JsonConvert.DeserializeObject<List<KafkaRestProxyResponse<K, V>>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false), jsonSerializerOptions);
+            var text=await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var result = JsonConvert.DeserializeObject<List<KafkaRestProxyResponse<K, V>>>(text, jsonSerializerOptions);
 
             return new KafkaRestProxyBatchResponse<K, V>() { Messages = result };
         }

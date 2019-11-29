@@ -62,7 +62,7 @@ namespace Mono.Dynamics365.Plugins
             {
                 // Obtain the target entity from the input parameters.
                 Entity entity = (Entity)context.InputParameters["Target"];
-
+                tracingService.Trace("Record id:"+entity.Id.ToString());
                 if (entity.LogicalName == "new_customersearch")
                 {
                     dto.CorrelationId = entity.Id;

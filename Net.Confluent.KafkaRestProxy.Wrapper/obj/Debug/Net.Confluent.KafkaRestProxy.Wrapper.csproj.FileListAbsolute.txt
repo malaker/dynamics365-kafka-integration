@@ -6,3 +6,12 @@
 /Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.dll
 /Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.pdb
 /Users/malaker/Projects/Mono.Dynamics365.Plugins/Net.Confluent.KafkaRestProxy.Wrapper/obj/Debug/Net.Confluent.KafkaRestProxy.Wrapper.csprojAssemblyReference.cache
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\bin\Debug\Net.Confluent.KafkaRestProxy.Wrapper.dll
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\bin\Debug\Net.Confluent.KafkaRestProxy.Wrapper.pdb
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\bin\Debug\Newtonsoft.Json.dll
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\bin\Debug\Newtonsoft.Json.xml
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\obj\Debug\Net.Confluent.KafkaRestProxy.Wrapper.csprojAssemblyReference.cache
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\obj\Debug\Net.Confluent.KafkaRestProxy.Wrapper.csproj.CopyComplete
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\obj\Debug\Net.Confluent.KafkaRestProxy.Wrapper.dll
+C:\Users\kb\Source\Repos\dynamics365-kafka-integration\Net.Confluent.KafkaRestProxy.Wrapper\obj\Debug\Net.Confluent.KafkaRestProxy.Wrapper.pdb

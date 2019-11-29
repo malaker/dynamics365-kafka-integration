@@ -24,6 +24,7 @@ namespace Net.Confluent.KafkaRestProxy.Wrapper
         {
             DefaultContractResolver contractResolver = new DefaultContractResolver
             {
+                
                 NamingStrategy = new CamelCaseNamingStrategy()
             };
 
