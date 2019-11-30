@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Dynamics365.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.Dynamics365.Kafka.Workflows", "Net.Dynamics365.Kafka.Workflows\Net.Dynamics365.Kafka.Workflows.csproj", "{B91EE95C-8272-4653-AD3D-5714F7A92BD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{C9E224FB-FEE3-4475-8AF0-0D069BE7E792}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{B91EE95C-8272-4653-AD3D-5714F7A92BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B91EE95C-8272-4653-AD3D-5714F7A92BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B91EE95C-8272-4653-AD3D-5714F7A92BD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9E224FB-FEE3-4475-8AF0-0D069BE7E792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9E224FB-FEE3-4475-8AF0-0D069BE7E792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9E224FB-FEE3-4475-8AF0-0D069BE7E792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9E224FB-FEE3-4475-8AF0-0D069BE7E792}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

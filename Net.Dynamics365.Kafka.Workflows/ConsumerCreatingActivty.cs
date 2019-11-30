@@ -17,6 +17,9 @@ namespace Net.Dynamics365.Kafka.Workflows
 {
     public class ConsumerCreatingActivty : CodeActivity
     {
+        [Input("Auto offset reset")]
+        public InArgument<string> AutoOffsetReset { get; set; }
+
         [Output("Kafka Consumer Uri")]
         public OutArgument<string> ConsumerUri { get; set; }
 
@@ -42,7 +45,7 @@ namespace Net.Dynamics365.Kafka.Workflows
             tracer.Trace(string.Format("Retrieved Kafka Proxy Uri From Config {0}", value));
 
             var consumer = new ConsumerFactory(new ConsumerFactory.ConsumerFactoryOptions() { KafkaProxyUri = value }).Create(
-                new ConsumerGroupingRequest() { ConsumerGroup = Guid.NewGuid().ToString(), NewConsumer = new NewConsumerRequest() { } });
+                new ConsumerGroupingRequest() { ConsumerGroup = Guid.NewGuid().ToString(), NewConsumer = new NewConsumerRequest() {AutoOffsetReset= string.IsNullOrEmpty(this.AutoOffsetReset.Get(context)) ? "latest":this.AutoOffsetReset.Get(context) } });
 
             var conusmerResult = consumer.GetAwaiter().GetResult();
 
@@ -113,7 +116,6 @@ namespace Net.Dynamics365.Kafka.Workflows
 
         protected override void Execute(CodeActivityContext context)
         {
-            JsonSerializationException ex;
             ITracingService tracer = context.GetExtension<ITracingService>();
             IWorkflowContext econtext = context.GetExtension<IWorkflowContext>();
             IOrganizationServiceFactory serviceFactory = context.GetExtension<IOrganizationServiceFactory>();
@@ -130,84 +132,18 @@ namespace Net.Dynamics365.Kafka.Workflows
                 {
                     ConsumerUri = uriB.Uri.ToString()
                 }); ;
-
-                // var result = cw.Consume();
-
-
-                var contractResolver = new CamelCasePropertyNamesContractResolver();
-
-                var jsonSerializerOptions = new JsonSerializerSettings
-                {
-
-                    ContractResolver = contractResolver,
-                    Formatting = Formatting.Indented
-                };
-
-
-                var uriToUse = uriB.Uri.ToString();
-                //consume
-                var consumeRequest = new HttpRequestMessage(HttpMethod.Get, $"{uriToUse}/records");
-
-                consumeRequest.Headers.Add("Accept", "application/vnd.kafka.json.v2+json");
-
-                var response =  httpClient.SendAsync(consumeRequest).GetAwaiter().GetResult();
-                var text = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                SearchCustomerResultDto dtoRes=null;
-                KafkaRestProxyBatchResponse<dynamic, SearchCustomerResultDto> toUse = null;
-                tracer.Trace(text);
-                if (text.Contains(this.CustomerSearchQuery.Get(context).Id.ToString()))
-                {
-                    tracer.Trace("id in message");
-                }
-
-                if (!string.IsNullOrEmpty(text))
-                {
-                    dtoRes = new SearchCustomerResultDto()
-                    {
-                        CorrelationId = this.CustomerSearchQuery.Get(context).Id,
-                        Matches = new List<SearchCustomerSingleResult>() { new SearchCustomerSingleResult() {
-                            CountryIsoCode="FI",CustomerName="Test",CustomerNumber="Test"+Guid.NewGuid().ToString(),
-                        ExternalSystemId=Guid.NewGuid().ToString(),ExternalSystemName="CoreCRM"} }
-                    };
-
-                }
-
+                KafkaRestProxyBatchResponse<string, SearchCustomerResultDto> toUse = null;
                 try
                 {
-                    tracer.Trace("try 1 single");
-                    var resultJson = JsonConvert.DeserializeObject<KafkaRestProxyResponse<dynamic, SearchCustomerResultDto>>(text, jsonSerializerOptions);
-                    tracer.Trace("try 1 single success");
-                }
-                catch(Exception ex2)
+                    var result = cw.Consume().GetAwaiter().GetResult();
+                    toUse = result;
+
+                }catch(Exception ex)
                 {
-                    tracer.Trace(ex2.Message);
+                    tracer.Trace(ex.Message + ex.StackTrace);
                 }
 
-                try
-                {
-                    tracer.Trace("try 1 batch");
-                    var resultJson = JsonConvert.DeserializeObject<List<KafkaRestProxyResponse<dynamic, SearchCustomerResultDto>>>(text, jsonSerializerOptions);
-                    
-                    toUse = new KafkaRestProxyBatchResponse<dynamic, SearchCustomerResultDto>() { Messages = resultJson };
-                
-                }catch(Exception exc)
-                {
-                    tracer.Trace(exc.Message);
-
-                    toUse = new KafkaRestProxyBatchResponse<dynamic, SearchCustomerResultDto>()
-                    {
-                        Messages =
-                   new List<KafkaRestProxyResponse<dynamic, SearchCustomerResultDto>>() {
-                        new KafkaRestProxyResponse<dynamic, SearchCustomerResultDto>(){
-                    Offset=1,Partition=0,Topic="ResponseTestTopic",Value=dtoRes}
-               }
-                    };
-
-                    tracer.Trace("Use hardcoded");
-                }
-               
-
-                var recordsResult = toUse;
+                var recordsResult = toUse ?? new KafkaRestProxyBatchResponse<string, SearchCustomerResultDto>() { Messages = new List<KafkaRestProxyResponse<string, SearchCustomerResultDto>>()};
 
                 Entity customerSearch = null;
                 var customerSearchId = this.CustomerSearchQuery.Get(context).Id;
@@ -240,7 +176,8 @@ namespace Net.Dynamics365.Kafka.Workflows
                               e.Value.Matches.ForEach(m =>
                               {
                                   Entity customerSearchResult = new Entity("new_customersearchresult");
-                                  customerSearchResult["new_customersearchresultid"] = this.CustomerSearchQuery.Get(context);
+                                  customerSearchResult["new_customersearchresultrecordid"] = this.CustomerSearchQuery.Get(context);
+                                  customerSearchResult["new_name"] = m.CustomerName;
                                   customerSearchResult["new_customername"] = m.CustomerName;
                                   customerSearchResult["new_customernumber"] = m.CustomerNumber;
                                   customerSearchResult["new_countryisocode"] = m.CountryIsoCode;
@@ -252,11 +189,11 @@ namespace Net.Dynamics365.Kafka.Workflows
                               });
 
                               customerSearch.Attributes["new_searchstatus"] = new OptionSetValue(100000003);
-
-                              //tracer.Trace("Commiting offset");
-                              //var commitTask = cw.Commit(new CommitOffsetsRequest() { Offsets = new List<ConsumerOffset>() { new ConsumerOffset() { Offset = maxOffset, Partition = partition, Topic = topic } } });
-                              //var commitResult = commitTask.GetAwaiter().GetResult();
-                              //tracer.Trace("Disposing consumer");
+                              service.Update(customerSearch);
+                              tracer.Trace("Commiting offset");
+                              var commitTask = cw.Commit(new CommitOffsetsRequest() { Offsets = new List<ConsumerOffset>() { new ConsumerOffset() { Offset = maxOffset, Partition = partition, Topic = topic } } });
+                              var commitResult = commitTask.GetAwaiter().GetResult();
+                              tracer.Trace("Disposing consumer");
                               cw.Dispose().GetAwaiter().GetResult();
                           }
                       }
